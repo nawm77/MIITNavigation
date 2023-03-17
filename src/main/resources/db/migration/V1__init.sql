@@ -80,3 +80,6 @@ ALTER TABLE "Time_table"
     ADD CONSTRAINT "Time_table_fk4" FOREIGN KEY ("auditoriumId") REFERENCES "Auditorium" ("id");
 ALTER TABLE "Time_table"
     ADD CONSTRAINT "Time_table_fk5" FOREIGN KEY ("groupId") REFERENCES "Group" ("id");
+
+
+insert into "Auditorium" (id, "auditriumNumber") values (1, 1523)
