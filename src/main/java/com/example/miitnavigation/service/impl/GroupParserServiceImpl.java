@@ -4,6 +4,7 @@ import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.repository.StudyGroupRepository;
 import com.example.miitnavigation.service.GroupParserService;
 import com.example.miitnavigation.service.StudyGroupService;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,7 +26,7 @@ public class GroupParserServiceImpl implements GroupParserService {
     public GroupParserServiceImpl(StudyGroupService studyGroupService) {
         this.studyGroupService = studyGroupService;
     }
-
+    @Timed
     @Override
     public HashMap<Integer, String> parse() {
         try {
