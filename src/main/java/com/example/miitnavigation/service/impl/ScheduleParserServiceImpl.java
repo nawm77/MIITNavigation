@@ -3,6 +3,7 @@ package com.example.miitnavigation.service.impl;
 import com.example.miitnavigation.model.Subject;
 import com.example.miitnavigation.repository.SubjectRepository;
 import com.example.miitnavigation.service.ScheduleParserService;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,6 +33,7 @@ public class ScheduleParserServiceImpl implements ScheduleParserService {
     /**
      * @return groups set of couples
      */
+    @Timed
     @Override
     public Set<String> parse() {
         try {

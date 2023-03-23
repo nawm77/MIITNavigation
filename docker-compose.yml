@@ -13,23 +13,40 @@ services:
       - .:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
-  pgadmin:
-    container_name: pgadminMiit
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: noemail@noemail.com
-      PGADMIN_DEFAULT_PASSWORD: root
+#    networks:
+#      - postgres
+#    restart: unless-stopped
+  navigation:
+    image: miit-navigation:latest
     ports:
-      - "5050:80"
-    networks:
-      - postgres
-    restart: unless-stopped
-networks:
-  postgres:
-    driver: bridge
-volumes:
-  postgres:
-  pgadmin:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/miit
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+#  pgadmin:
+#    container_name: pgadminMiit
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: noemail@noemail.com
+#      PGADMIN_DEFAULT_PASSWORD: root
+#    ports:
+#      - "5050:80"
+#    networks:
+#      - postgres
+#    restart: unless-stopped

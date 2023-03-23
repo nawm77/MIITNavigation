@@ -1,0 +1,6 @@
+version: "3"
+services:
+  web:
+    extra_hosts:
+      # Find out what address to use with "ifconfig docker0" or "ip addr show docker0 | grep inet"
+      - "host.docker.internal:172.17.0.1"
