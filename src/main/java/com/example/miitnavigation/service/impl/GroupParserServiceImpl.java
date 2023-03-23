@@ -3,6 +3,7 @@ package com.example.miitnavigation.service.impl;
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.repository.StudyGroupRepository;
 import com.example.miitnavigation.service.GroupParserService;
+import com.example.miitnavigation.service.StudyGroupService;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
@@ -19,13 +20,11 @@ import java.util.HashMap;
 @Service
 public class GroupParserServiceImpl implements GroupParserService {
     private final HashMap<Integer, String> allGroups = new HashMap<>();
-
-    //todo relocate repository logic to service
-    private final StudyGroupRepository studyGroupRepository;
+    private final StudyGroupService studyGroupService;
 
     @Autowired
-    public GroupParserServiceImpl(StudyGroupRepository studyGroupRepository) {
-        this.studyGroupRepository = studyGroupRepository;
+    public GroupParserServiceImpl(StudyGroupService studyGroupService) {
+        this.studyGroupService = studyGroupService;
     }
     @Timed
     @Override
@@ -46,7 +45,7 @@ public class GroupParserServiceImpl implements GroupParserService {
                     StudyGroup studyGroup = new StudyGroup();
                     studyGroup.setId(Long.parseLong(timetableId));
                     studyGroup.setGroupName(groupName);
-                    studyGroupRepository.save(studyGroup);
+                    studyGroupService.createStudyGroup(studyGroup);
                 }
             }
         } catch (IOException e) {
