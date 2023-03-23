@@ -1,8 +1,8 @@
 package com.example.miitnavigation.service.impl;
 
 import com.example.miitnavigation.model.Subject;
-import com.example.miitnavigation.repository.SubjectRepository;
 import com.example.miitnavigation.service.ScheduleParserService;
+import com.example.miitnavigation.service.SubjectService;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,13 +20,11 @@ import java.util.Set;
 public class ScheduleParserServiceImpl implements ScheduleParserService {
     private final static byte INDEX_FIRST_COUPLE_IN_HTML_TABLE = 1;
     private final HashSet<String> couples = new HashSet<>();
-
-    //todo relocate repository logic to service
-    private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
 
     @Autowired
-    public ScheduleParserServiceImpl(SubjectRepository subjectRepository) {
-        this.subjectRepository = subjectRepository;
+    public ScheduleParserServiceImpl(SubjectService subjectService) {
+        this.subjectService = subjectService;
     }
 
     /**
@@ -51,7 +49,7 @@ public class ScheduleParserServiceImpl implements ScheduleParserService {
             for (String couple : couples) {
                 Subject subject = new Subject();
                 subject.setName(couple);
-                subjectRepository.save(subject);
+                subjectService.createSubject(subject);
             }
             log.info(couples);
         } catch (IOException e) {
