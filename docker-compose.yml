@@ -17,7 +17,7 @@ services:
 #      - postgres
 #    restart: unless-stopped
   navigation:
-    image: miit-navigation:latest
+    image: nawm77/miit-navigation
     ports:
       - "8080:8080"
     environment:

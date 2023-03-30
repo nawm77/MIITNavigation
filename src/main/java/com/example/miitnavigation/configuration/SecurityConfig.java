@@ -33,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/miit/**").authenticated()
+                .requestMatchers("/miit/api/v1/**").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/**").permitAll()
