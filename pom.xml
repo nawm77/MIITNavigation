@@ -161,5 +161,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>miit-navigation</finalName>
     </build>
 </project>
