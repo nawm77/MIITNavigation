@@ -1,4 +1,4 @@
-package com.example.miitnavigation.Component;
+package com.example.miitnavigation.component;
 
 import com.example.miitnavigation.model.UserInfo;
 import com.example.miitnavigation.repository.UserInfoRepository;
