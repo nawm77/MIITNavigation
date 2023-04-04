@@ -1,1 +1,0 @@
-INSERT INTO user_info (email, name, password, roles) VALUES ('email@email.com', 'adminMIIT', 'adminadmin', 'ADMIN');

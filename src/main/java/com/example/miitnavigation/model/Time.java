@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 @Entity
 @Setter
@@ -16,6 +16,6 @@ public final class Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Calendar timeStart;
-    private Calendar timeEnd;
+    private LocalDateTime timeStart;
+    private LocalDateTime timeEnd;
 }

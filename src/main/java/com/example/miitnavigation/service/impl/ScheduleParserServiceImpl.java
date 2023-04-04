@@ -33,6 +33,7 @@ public class ScheduleParserServiceImpl implements ScheduleParserService {
      */
     @Timed
     @Override
+    //todo явно связать класс с Schedule, чтобы в будущем не возникало сложностей с непонятным Set<String>
     public Set<String> parse() {
         try {
             String url = "https://www.miit.ru/timetable/186236";
