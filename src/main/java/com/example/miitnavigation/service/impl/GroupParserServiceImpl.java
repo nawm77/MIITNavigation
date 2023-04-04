@@ -1,34 +1,27 @@
 package com.example.miitnavigation.service.impl;
 
 import com.example.miitnavigation.model.StudyGroup;
-import com.example.miitnavigation.repository.StudyGroupRepository;
 import com.example.miitnavigation.service.GroupParserService;
-import com.example.miitnavigation.service.StudyGroupService;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 @Service
 public class GroupParserServiceImpl implements GroupParserService {
-    private final HashMap<Integer, String> allGroups = new HashMap<>();
-    private final StudyGroupService studyGroupService;
 
-    @Autowired
-    public GroupParserServiceImpl(StudyGroupService studyGroupService) {
-        this.studyGroupService = studyGroupService;
-    }
     @Timed
     @Override
-    public HashMap<Integer, String> parse() {
+    public List<StudyGroup> parse() {
+        List<StudyGroup> studyGroupList = new ArrayList<>();
         try {
             String url = "https://www.miit.ru/timetable";
             Document document = Jsoup.connect(url).get();
@@ -41,17 +34,17 @@ public class GroupParserServiceImpl implements GroupParserService {
                 String timetableLink = element.attr("href");
                 String timetableId = timetableLink.replaceAll("\\D", ""); // убираем все не-цифровые символы
                 if (timetableId.length() > 0) {
-                    allGroups.put(Integer.valueOf(timetableId), groupName);
                     StudyGroup studyGroup = new StudyGroup();
                     studyGroup.setId(Long.parseLong(timetableId));
                     studyGroup.setGroupName(groupName);
-                    studyGroupService.createStudyGroup(studyGroup);
+                    studyGroupList.add(studyGroup);
                 }
             }
+            log.info(studyGroupList.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return allGroups;
-    }
 
+        return studyGroupList;
+    }
 }

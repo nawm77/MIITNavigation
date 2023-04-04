@@ -34,7 +34,7 @@ public class StudyGroupServiceImpl implements StudyGroupService {
 
     @Async
     @Override
-    public CompletableFuture<List<StudyGroup>> getAllStudyGroupTimetable() {
+    public CompletableFuture<List<StudyGroup>> getAllStudyGroup() {
         return CompletableFuture.completedFuture(studyGroupRepository.findAll());
     }
 

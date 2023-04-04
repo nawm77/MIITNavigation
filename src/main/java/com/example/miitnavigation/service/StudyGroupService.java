@@ -11,7 +11,7 @@ public interface StudyGroupService {
 
     CompletableFuture<Optional<StudyGroup>> getStudyGroupById(Long id);
 
-    CompletableFuture<List<StudyGroup>> getAllStudyGroupTimetable();
+    CompletableFuture<List<StudyGroup>> getAllStudyGroup();
 
     CompletableFuture<Void> deleteStudyGroupById(Long id);
 }
