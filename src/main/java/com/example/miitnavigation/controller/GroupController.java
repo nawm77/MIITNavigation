@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutionException;
+
 @Log4j2
 @RestController
 @RequestMapping("/miit/api/v1")
@@ -19,9 +21,10 @@ public class GroupController {
     }
 
     @GetMapping("/groups")
-    public String getAllGroups() {
+    public String getAllGroups() throws ExecutionException, InterruptedException {
         log.info(studyGroupService.getAllStudyGroup());
-        return studyGroupService.getAllStudyGroup().toString();
+        var per = studyGroupService.getAllStudyGroup();
+        return per.get().toString();
     }
 
 //    @GetMapping("group/{id}")
