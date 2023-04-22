@@ -9,12 +9,12 @@ services:
       POSTGRES_DB: miit
       PGDATA: /data/postgres
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d/
       - .:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   navigation:
     container_name: localtest
+#    container_name: navigationService
     image: miitlocaltest:1.1
 #    image: nawm77/miit-navigation:latest
     ports:
