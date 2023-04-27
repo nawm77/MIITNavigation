@@ -1,7 +1,9 @@
 package com.example.miitnavigation.service;
 
-import java.util.Set;
+import com.example.miitnavigation.model.Subject;
+
+import java.util.List;
 
 public interface ScheduleParserService {
-    Set<String> parse();
+    List<Subject> parse();
 }
