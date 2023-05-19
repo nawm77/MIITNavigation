@@ -30,10 +30,14 @@ services:
       - "9090:9090"
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
   grafana:
     image: grafana/grafana
     ports:
-      - "4000:4000"
+      - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
