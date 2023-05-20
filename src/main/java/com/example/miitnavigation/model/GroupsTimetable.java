@@ -1,9 +1,6 @@
 package com.example.miitnavigation.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +11,11 @@ public final class GroupsTimetable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long groupId;
-    private long timeTableId;
+    @ManyToOne
+    @JoinColumn
+    private StudyGroup studyGroup;
+
+    @ManyToOne
+    @JoinColumn
+    private TimeTable timeTable;
 }

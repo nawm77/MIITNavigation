@@ -6,10 +6,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Setter
 @Getter
+@ToString
 public final class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
