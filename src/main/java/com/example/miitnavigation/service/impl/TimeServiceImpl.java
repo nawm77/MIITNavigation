@@ -34,7 +34,7 @@ public class TimeServiceImpl implements TimeService {
 
     @Async
     @Override
-    public CompletableFuture<List<Time>> getTimeTeachers() {
+    public CompletableFuture<List<Time>> getAllTimes() {
         return CompletableFuture.completedFuture(timeRepository.findAll());
     }
 

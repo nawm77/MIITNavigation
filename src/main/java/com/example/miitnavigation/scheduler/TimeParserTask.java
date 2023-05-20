@@ -1,7 +1,7 @@
 package com.example.miitnavigation.scheduler;
 
 import com.example.miitnavigation.model.Time;
-import com.example.miitnavigation.service.TimeParserService;
+import com.example.miitnavigation.service.parsers.TimeParserService;
 import com.example.miitnavigation.service.TimeService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;

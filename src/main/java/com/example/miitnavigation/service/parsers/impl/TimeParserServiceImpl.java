@@ -1,7 +1,7 @@
-package com.example.miitnavigation.service.impl;
+package com.example.miitnavigation.service.parsers.impl;
 
 import com.example.miitnavigation.model.Time;
-import com.example.miitnavigation.service.TimeParserService;
+import com.example.miitnavigation.service.parsers.TimeParserService;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
