@@ -1,7 +1,7 @@
-package com.example.miitnavigation.service.impl;
+package com.example.miitnavigation.service.parsers.impl;
 
 import com.example.miitnavigation.model.StudyGroup;
-import com.example.miitnavigation.service.GroupParserService;
+import com.example.miitnavigation.service.parsers.GroupParserService;
 import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
@@ -17,7 +17,10 @@ import java.util.List;
 @Log4j2
 @Service
 public class GroupParserServiceImpl implements GroupParserService {
-
+    /**
+     * метод парсит вообще все группы, которые существуют
+     * @return экземпляр класса StudyGroup
+     */
     @Timed
     @Override
     public List<StudyGroup> parse() {

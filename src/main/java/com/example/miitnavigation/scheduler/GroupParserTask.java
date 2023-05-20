@@ -1,7 +1,7 @@
 package com.example.miitnavigation.scheduler;
 
 import com.example.miitnavigation.model.StudyGroup;
-import com.example.miitnavigation.service.GroupParserService;
+import com.example.miitnavigation.service.parsers.GroupParserService;
 import com.example.miitnavigation.service.StudyGroupService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;

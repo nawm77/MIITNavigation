@@ -11,7 +11,7 @@ public interface TimeService {
 
     CompletableFuture<Optional<Time>> getTimeById(Long id);
 
-    CompletableFuture<List<Time>> getTimeTeachers();
+    CompletableFuture<List<Time>> getAllTimes();
 
     CompletableFuture<Void> deleteTimeById(Long id);
 }
