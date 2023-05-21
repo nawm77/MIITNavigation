@@ -32,4 +32,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ApiResponse apiResponse = new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), null);
         return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(TeacherException.class)
+    public ResponseEntity<Object> handleTeacherException(TeacherException ex) {
+        ApiResponse errorResponse = new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(),null);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

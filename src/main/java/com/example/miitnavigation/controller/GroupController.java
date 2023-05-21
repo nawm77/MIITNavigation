@@ -1,9 +1,7 @@
 package com.example.miitnavigation.controller;
 
-import com.example.miitnavigation.dto.GroupDTO;
 import com.example.miitnavigation.exception.GroupException;
 import com.example.miitnavigation.exception.ResourceNotFoundException;
-import com.example.miitnavigation.mapper.GroupMapper;
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.service.StudyGroupService;
 import com.google.gson.Gson;
@@ -29,7 +27,7 @@ public class GroupController {
 
     @GetMapping("/groups")
     @ResponseBody
-    public String getAllGroups() throws ExecutionException, InterruptedException {
+    public String getAllGroups() {
         try {
             var allStudyGroup = studyGroupService.getAllStudyGroup();
             log.info(allStudyGroup);

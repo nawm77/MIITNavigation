@@ -1,23 +1,36 @@
 package com.example.miitnavigation.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Setter
 @Getter
-public final class TimeTable {
+public class TimeTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private int subjectId;
-    private long teacherId;
-    private long timeId;
-    private long dayId;
-    private long auditoriumId;
-    private boolean isEven;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn
+    private Subject subject;
+
+    @ManyToOne
+    @JoinColumn
+    private Teacher teacher;
+
+    @ManyToOne
+    @JoinColumn
+    private Time time;
+
+    @ManyToOne
+    @JoinColumn
+    private Day day;
+
+    @ManyToOne
+    @JoinColumn
+    private Auditorium auditorium;
+
+    private Boolean isEven;
 }
