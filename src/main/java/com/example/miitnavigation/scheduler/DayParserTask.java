@@ -1,6 +1,5 @@
 package com.example.miitnavigation.scheduler;
 
-import com.example.miitnavigation.model.Auditorium;
 import com.example.miitnavigation.model.Day;
 import com.example.miitnavigation.service.DayService;
 import com.example.miitnavigation.service.parsers.DayParserService;
@@ -29,6 +28,7 @@ public class DayParserTask {
     public void parse() {
         List<Day> days = dayParserService.parse();
         for (Day day : days) {
+            log.info(day);
             dayService.createDay(day);
         }
         log.info("Parsing days complete");

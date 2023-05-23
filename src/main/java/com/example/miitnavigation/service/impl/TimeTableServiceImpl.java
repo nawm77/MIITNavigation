@@ -33,7 +33,7 @@ public class TimeTableServiceImpl implements TimeTableService {
     @Async
     @Override
     public CompletableFuture<TimeTable> createTimeTable(TimeTable timeTable) {
-        return CompletableFuture.completedFuture(timeTableRepository.save(timeTable));
+        return CompletableFuture.completedFuture(timeTableRepository.saveAndFlush(timeTable));
     }
 
     @Async

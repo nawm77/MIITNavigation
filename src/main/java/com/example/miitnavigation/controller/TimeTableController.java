@@ -1,10 +1,11 @@
 package com.example.miitnavigation.controller;
 
+import com.example.miitnavigation.model.Day;
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.model.TimeTable;
+import com.example.miitnavigation.service.DayService;
 import com.example.miitnavigation.service.StudyGroupService;
 import com.example.miitnavigation.service.TimeTableService;
-import com.example.miitnavigation.service.impl.TimeTableServiceImpl;
 import com.example.miitnavigation.service.parsers.TimeTableParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,14 @@ public class TimeTableController {
     private final TimeTableService timeTableService;
     private final TimeTableParser timeTableParser;
     private final StudyGroupService studyGroupService;
-    private final TimeTableServiceImpl timeTableServiceImpl;
+    private final DayService dayService;
 
     @Autowired
-    public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser, StudyGroupService studyGroupService, TimeTableServiceImpl timeTableServiceImpl) {
+    public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser, StudyGroupService studyGroupService, DayService dayService) {
         this.timeTableService = timeTableService;
         this.timeTableParser = timeTableParser;
         this.studyGroupService = studyGroupService;
-        this.timeTableServiceImpl = timeTableServiceImpl;
+        this.dayService = dayService;
     }
 
     @GetMapping("/timetable/{id}")
@@ -42,8 +43,10 @@ public class TimeTableController {
         StudyGroup studyGroup = studyGroupById.get().get();
         List<TimeTable> parse = timeTableParser.parse(studyGroup);
         for (TimeTable timeTable : parse) {
-            timeTableServiceImpl.saveTimeTable(timeTable);
-//            timeTableService.createTimeTable(timeTable);
+            CompletableFuture<List<Day>> allDays = dayService.getAllDays();
+            log.info(allDays.get());
+//            timeTableServiceImpl.saveTimeTable(timeTable);
+            timeTableService.createTimeTable(timeTable);
             log.info(timeTable);
         }
         return ResponseEntity.ok(parse);

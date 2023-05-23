@@ -73,9 +73,9 @@ public class TimeTableParserImpl implements TimeTableParser {
                                 .timeEnd(endLocalTime.atDate(LocalDate.now()))
                                 .build());
 
-                        timeTable.setDay(Day.builder()
-                                .dayName(timeSlot)
-                                .build());
+                        Day day = new Day();
+                        day.setDayName("Пятница");
+                        timeTable.setDay(day);
 
                         // Парсинг ссылок на преподавателей
                         StringBuilder teacherStr = null;
@@ -104,6 +104,7 @@ public class TimeTableParserImpl implements TimeTableParser {
                                 .build();
                         timeTable.setAuditorium(auditorium);
                         timeTable.setIsEven(true);
+                        log.info(timeTable);
                         tableList.add(timeTable);
                     }
                 }
