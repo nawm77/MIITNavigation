@@ -21,6 +21,7 @@ public class TimeTableParserImpl implements TimeTableParser {
     @Override
     public List<TimeTable> parse(StudyGroup studyGroup) {
         List<TimeTable> tableList = new ArrayList<>();
+        int i = 0;
         try {
             // Подключаемся к странице с расписанием
             Document doc = Jsoup.connect("https://www.miit.ru/timetable/186236").get();
@@ -73,10 +74,6 @@ public class TimeTableParserImpl implements TimeTableParser {
                                 .timeEnd(endLocalTime.atDate(LocalDate.now()))
                                 .build());
 
-                        Day day = new Day();
-                        day.setDayName("Пятница");
-                        timeTable.setDay(day);
-
                         // Парсинг ссылок на преподавателей
                         StringBuilder teacherStr = null;
                         Elements teacherLinks = timetableItem.select("a[href^=\"/people/\"]");
@@ -105,6 +102,8 @@ public class TimeTableParserImpl implements TimeTableParser {
                         timeTable.setAuditorium(auditorium);
                         timeTable.setIsEven(true);
                         log.info(timeTable);
+                        timeTable.setId((long) i);
+                        i++;
                         tableList.add(timeTable);
                     }
                 }
@@ -112,6 +111,7 @@ public class TimeTableParserImpl implements TimeTableParser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        log.warn(tableList);
         return tableList;
     }
 }

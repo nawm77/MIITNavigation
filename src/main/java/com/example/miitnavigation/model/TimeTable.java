@@ -27,10 +27,6 @@ public class TimeTable {
     @JoinColumn(name = "time_id")
     private Time time;
 
-    @ManyToOne
-    @JoinColumn(name = "day_id")
-    private Day day;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "auditorium_id")
     private Auditorium auditorium;

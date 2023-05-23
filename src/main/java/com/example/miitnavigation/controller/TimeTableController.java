@@ -1,9 +1,7 @@
 package com.example.miitnavigation.controller;
 
-import com.example.miitnavigation.model.Day;
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.model.TimeTable;
-import com.example.miitnavigation.service.DayService;
 import com.example.miitnavigation.service.StudyGroupService;
 import com.example.miitnavigation.service.TimeTableService;
 import com.example.miitnavigation.service.parsers.TimeTableParser;
@@ -27,14 +25,12 @@ public class TimeTableController {
     private final TimeTableService timeTableService;
     private final TimeTableParser timeTableParser;
     private final StudyGroupService studyGroupService;
-    private final DayService dayService;
 
     @Autowired
-    public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser, StudyGroupService studyGroupService, DayService dayService) {
+    public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser, StudyGroupService studyGroupService) {
         this.timeTableService = timeTableService;
         this.timeTableParser = timeTableParser;
         this.studyGroupService = studyGroupService;
-        this.dayService = dayService;
     }
 
     @GetMapping("/timetable/{id}")
@@ -43,8 +39,6 @@ public class TimeTableController {
         StudyGroup studyGroup = studyGroupById.get().get();
         List<TimeTable> parse = timeTableParser.parse(studyGroup);
         for (TimeTable timeTable : parse) {
-            CompletableFuture<List<Day>> allDays = dayService.getAllDays();
-            log.info(allDays.get());
 //            timeTableServiceImpl.saveTimeTable(timeTable);
             timeTableService.createTimeTable(timeTable);
             log.info(timeTable);
