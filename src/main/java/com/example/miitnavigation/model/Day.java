@@ -3,10 +3,15 @@ package com.example.miitnavigation.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public final class Day {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +20,10 @@ public final class Day {
     @Column(unique = true)
     private String dayName;
 
-    public Day(String dayName) {
-        this.dayName = dayName;
+    @OneToMany(mappedBy = "day", cascade = CascadeType.ALL)
+    private List<TimeTable> timeTableList;
+
+    public Day(String name) {
     }
 
-    public Day() {
-
-    }
 }

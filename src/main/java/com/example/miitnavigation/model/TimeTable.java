@@ -1,36 +1,41 @@
 package com.example.miitnavigation.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Setter
 @Getter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TimeTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "time_id")
     private Time time;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "day_id")
     private Day day;
 
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auditorium_id")
     private Auditorium auditorium;
 
     private Boolean isEven;
+
+    private String type;
 }

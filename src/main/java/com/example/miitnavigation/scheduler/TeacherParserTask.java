@@ -14,6 +14,7 @@ import java.util.List;
 
 @Component
 @Log4j2
+//fixme
 public class TeacherParserTask {
     private final TeacherParserService teacherParserService;
     private final TeacherService teacherService;

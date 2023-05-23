@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class GroupParserServiceImpl implements GroupParserService {
     /**
-     * метод парсит вообще все группы, которые существуют
+     * Метод парсит вообще все группы, которые существуют
      * @return экземпляр класса StudyGroup
      */
     @Timed

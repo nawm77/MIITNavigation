@@ -15,6 +15,7 @@ import java.util.List;
 
 @Component
 @Log4j2
+//fixme
 public class SubjectParserTask {
     private final SubjectsParserService subjectsParserService;
     private final SubjectService subjectService;

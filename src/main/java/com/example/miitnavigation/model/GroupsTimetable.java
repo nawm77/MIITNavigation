@@ -1,12 +1,15 @@
 package com.example.miitnavigation.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Setter
 @Getter
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public final class GroupsTimetable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

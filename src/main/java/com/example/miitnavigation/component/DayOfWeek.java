@@ -9,6 +9,13 @@ public enum DayOfWeek {
     SATURDAY("Суббота"),
     SUNDAY("Воскресенье");
 
+    @Override
+    public String toString() {
+        return "DayOfWeek{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     private final String name;
 
     DayOfWeek(String name) {

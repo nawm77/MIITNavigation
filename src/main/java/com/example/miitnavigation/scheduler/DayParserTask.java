@@ -31,6 +31,6 @@ public class DayParserTask {
         for (Day day : days) {
             dayService.createDay(day);
         }
-        log.info("Parsing auditorium group complete");
+        log.info("Parsing days complete");
     }
 }
