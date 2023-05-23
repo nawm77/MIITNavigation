@@ -8,7 +8,6 @@ import lombok.*;
 @Entity
 @Setter
 @Getter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +16,12 @@ public final class StudyGroup {
     private long id;
     @Column(unique = true)
     private String groupName;
+
+    @Override
+    public String toString() {
+        return "StudyGroup{" +
+                "id=" + id +
+                ", groupName='" + groupName + '\'' +
+                '}';
+    }
 }

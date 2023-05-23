@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public final class Time {
@@ -21,4 +20,14 @@ public final class Time {
     private LocalDateTime timeEnd;
     @OneToMany(mappedBy = "time", cascade = CascadeType.ALL)
     private List<TimeTable> timeTableList;
+
+    @Override
+    public String toString() {
+        return "Time{" +
+                "id=" + id +
+                ", timeStart=" + timeStart +
+                ", timeEnd=" + timeEnd +
+                ", timeTableList=" + timeTableList +
+                '}';
+    }
 }

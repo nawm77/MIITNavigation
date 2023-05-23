@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Setter
 @Getter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,8 +16,16 @@ public final class GroupsTimetable {
     @ManyToOne
     @JoinColumn
     private StudyGroup studyGroup;
-
     @ManyToOne
     @JoinColumn
     private TimeTable timeTable;
+
+    @Override
+    public String toString() {
+        return "GroupsTimetable{" +
+                "id=" + id +
+                ", studyGroup=" + studyGroup +
+                ", timeTable=" + timeTable +
+                '}';
+    }
 }

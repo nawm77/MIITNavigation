@@ -13,7 +13,7 @@ public interface TimeTableService {
 
     CompletableFuture<Optional<TimeTable>> getTimeTableById(Long id);
 
-    CompletableFuture<List<TimeTable>> getTimeTableTeachers();
+    CompletableFuture<List<TimeTable>> getTimeTable();
 
     CompletableFuture<Void> deleteTimeTableById(Long id);
 }

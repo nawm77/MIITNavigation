@@ -9,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
 public interface AuditoriumService {
     CompletableFuture<Auditorium> createAuditorium(Auditorium auditorium);
 
+    boolean exists(String auditoriumNumber);
+
     CompletableFuture<Optional<Auditorium>> getAuditoriumById(Long id);
 
     CompletableFuture<List<Auditorium>> getAllAudiences();

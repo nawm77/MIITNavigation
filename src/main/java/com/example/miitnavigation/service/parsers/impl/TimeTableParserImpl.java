@@ -21,7 +21,6 @@ public class TimeTableParserImpl implements TimeTableParser {
     @Override
     public List<TimeTable> parse(StudyGroup studyGroup) {
         List<TimeTable> tableList = new ArrayList<>();
-        int i = 0;
         try {
             // Подключаемся к странице с расписанием
             Document doc = Jsoup.connect("https://www.miit.ru/timetable/186236").get();
@@ -101,9 +100,8 @@ public class TimeTableParserImpl implements TimeTableParser {
                                 .build();
                         timeTable.setAuditorium(auditorium);
                         timeTable.setIsEven(true);
+                        timeTable.setType("test");
                         log.info(timeTable);
-                        timeTable.setId((long) i);
-                        i++;
                         tableList.add(timeTable);
                     }
                 }

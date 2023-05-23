@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Setter
-@Getter
-@ToString
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,4 +32,17 @@ public class TimeTable {
     private Boolean isEven;
 
     private String type;
+
+    @Override
+    public String toString() {
+        return "TimeTable{" +
+                "id=" + id +
+                ", subject=" + subject +
+                ", teacher=" + teacher +
+                ", time=" + time +
+                ", auditorium=" + auditorium +
+                ", isEven=" + isEven +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

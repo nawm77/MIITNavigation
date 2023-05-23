@@ -7,7 +7,6 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +17,13 @@ public class Subject {
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
     private List<TimeTable> timeTableList;
     private String name;
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", timeTableList=" + timeTableList +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

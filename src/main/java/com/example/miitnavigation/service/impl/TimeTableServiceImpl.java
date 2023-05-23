@@ -2,6 +2,7 @@ package com.example.miitnavigation.service.impl;
 
 import com.example.miitnavigation.model.TimeTable;
 import com.example.miitnavigation.repository.TimeTableRepository;
+import com.example.miitnavigation.service.AuditoriumService;
 import com.example.miitnavigation.service.TimeTableService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,14 +21,18 @@ public class TimeTableServiceImpl implements TimeTableService {
     @PersistenceContext
     private EntityManager entityManager;
     private final TimeTableRepository timeTableRepository;
+    private final AuditoriumService auditoriumService;
 
     @Autowired
-    public TimeTableServiceImpl(TimeTableRepository timeTableRepository) {
+    public TimeTableServiceImpl(TimeTableRepository timeTableRepository, AuditoriumService auditoriumService) {
         this.timeTableRepository = timeTableRepository;
+        this.auditoriumService = auditoriumService;
     }
 
     public void saveTimeTable(TimeTable timeTable) {
+//        if (!auditoriumService.exists(timeTable.getAuditorium().getAuditoriumNumber())) {
         entityManager.merge(timeTable);
+//        }
     }
 
     @Async
@@ -44,7 +49,7 @@ public class TimeTableServiceImpl implements TimeTableService {
 
     @Async
     @Override
-    public CompletableFuture<List<TimeTable>> getTimeTableTeachers() {
+    public CompletableFuture<List<TimeTable>> getTimeTable() {
         return CompletableFuture.completedFuture(timeTableRepository.findAll());
     }
 
