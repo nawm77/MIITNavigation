@@ -40,7 +40,7 @@ public class TimeTableController {
         List<TimeTable> parse = timeTableParser.parse(studyGroup);
         for (TimeTable timeTable : parse) {
 //            timeTableServiceImpl.saveTimeTable(timeTable);
-            timeTableService.createTimeTable(timeTable);
+            timeTableService.saveTimeTable(timeTable);
             log.info(timeTable);
         }
         return ResponseEntity.ok(parse);

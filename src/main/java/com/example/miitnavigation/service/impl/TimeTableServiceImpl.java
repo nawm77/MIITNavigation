@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@Transactional
 public class TimeTableServiceImpl implements TimeTableService {
     @PersistenceContext
     private EntityManager entityManager;
@@ -25,9 +26,8 @@ public class TimeTableServiceImpl implements TimeTableService {
         this.timeTableRepository = timeTableRepository;
     }
 
-    @Transactional
     public void saveTimeTable(TimeTable timeTable) {
-        entityManager.persist(timeTable);
+        entityManager.merge(timeTable);
     }
 
     @Async

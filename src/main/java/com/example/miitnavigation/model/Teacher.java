@@ -16,7 +16,6 @@ public final class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(unique = true)
     private String nameSurname;
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<TimeTable> timeTableList;
