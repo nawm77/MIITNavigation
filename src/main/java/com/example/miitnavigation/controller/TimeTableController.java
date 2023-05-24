@@ -1,6 +1,5 @@
 package com.example.miitnavigation.controller;
 
-import com.example.miitnavigation.dto.TimeTableDTO;
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.model.TimeTable;
 import com.example.miitnavigation.service.StudyGroupService;
@@ -9,10 +8,7 @@ import com.example.miitnavigation.service.parsers.TimeTableParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,24 +24,33 @@ public class TimeTableController {
     private final StudyGroupService studyGroupService;
 
     @Autowired
-    public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser, StudyGroupService studyGroupService) {
+    public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser,
+                               StudyGroupService studyGroupService) {
         this.timeTableService = timeTableService;
         this.timeTableParser = timeTableParser;
         this.studyGroupService = studyGroupService;
     }
 
     @GetMapping("/timetable/{id}")
-    public ResponseEntity<List<TimeTableDTO>> getTimeById(@PathVariable Long id) throws ExecutionException, InterruptedException {
+    public ResponseEntity<List<TimeTable>> getTimeById(@PathVariable Long id,
+                                                       @RequestParam(required = false) Boolean isEven) throws ExecutionException, InterruptedException {
         CompletableFuture<Optional<StudyGroup>> studyGroupById = studyGroupService.getStudyGroupById(id);
         StudyGroup studyGroup = studyGroupById.get().get();
-        List<TimeTable> parse = timeTableParser.parse(studyGroup);
-        for (TimeTable timeTable : parse) {
-            timeTableService.saveTimeTable(timeTable);
+        //fixme сейчас данные в БД сохраняются некорректно! Надо либо нормально доделать таблицы, либо дропать их.
+        if (isEven != null) {
+            List<TimeTable> parse = timeTableParser.parse(studyGroup, isEven);
+            for (TimeTable timeTable : parse) {
+                timeTableService.saveTimeTable(timeTable);
+            }
+        } else {
+            List<TimeTable> parse1 = timeTableParser.parse(studyGroup, true);
+            List<TimeTable> parse2 = timeTableParser.parse(studyGroup, false);
+            parse1.addAll(parse2);
+            for (TimeTable timeTable : parse1) {
+                timeTableService.saveTimeTable(timeTable);
+            }
         }
-        CompletableFuture<List<TimeTable>> timeTable = timeTableService.getTimeTable();
-//        return ResponseEntity.ok(timeTable.get().stream()
-//                .map(TimeTableMapper.INSTANCE::toDTO)
-//                .collect(Collectors.toList()));
-        return ResponseEntity.ok(TimeTableDTO.toDTO(timeTable.get()));
+        List<TimeTable> allWithFetch = timeTableService.findAllWithFetch();
+        return ResponseEntity.ok(allWithFetch);
     }
 }

@@ -19,97 +19,112 @@ import java.util.List;
 @Log4j2
 public class TimeTableParserImpl implements TimeTableParser {
     @Override
-    public List<TimeTable> parse(StudyGroup studyGroup) {
+    public List<TimeTable> parse(StudyGroup studyGroup, boolean even) {
         List<TimeTable> tableList = new ArrayList<>();
         try {
             // Подключаемся к странице с расписанием
-            Document doc = Jsoup.connect("https://www.miit.ru/timetable/186236").get();
+            Document doc = Jsoup.connect("https://www.miit.ru/timetable/" + studyGroup.getId()).get();
 
             // Находим контейнер с расписанием
-            Element timetableContainer = doc.selectFirst("#week-2");
+            String isEven = even ? "#week-2" : "#week-1";
+            Element timetableContainer = doc.selectFirst(isEven);
 
             // Парсинг вкладок
             Elements tabPanes = timetableContainer.select("div.tab-pane");
             for (Element tabPane : tabPanes) {
                 String tabId = tabPane.attr("id");
-                log.info("Tab ID: " + tabId);
+                log.debug("Tab ID: {}", tabId);
 
                 // Парсинг блоков информации внутри вкладок
                 Elements infoBlocks = tabPane.select("div.info-block");
                 for (Element infoBlock : infoBlocks) {
-                    TimeTable timeTable = new TimeTable(); // Создаем новый экземпляр TimeTable для каждого блока информации
                     String headerText = infoBlock.selectFirst("span.info-block__header-text").text();
-                    log.info("Header Text: " + headerText);
+                    log.debug("Header Text: {}", headerText);
 
                     // Парсинг элементов расписания внутри блоков информации
                     Elements timetableItems = infoBlock.select("div.timetable__list-timeslot");
                     for (Element timetableItem : timetableItems) {
-
+                        TimeTable timeTable = new TimeTable();
                         String timeSlot = timetableItem.selectFirst("div.mb-1").text();
-                        String subject = timetableItem.selectFirst("span.timetable__grid-text_gray").text();
+                        String type = timetableItem.selectFirst("span.timetable__grid-text_gray").text();
                         String description = timetableItem.ownText().trim();
 
-                        //Какая сейчас пара
+                        // Какая сейчас пара
                         String[] parts = timeSlot.split("[,—]");
                         String timeSlotIndex = parts[0].trim();
-                        log.info("Part: " + timeSlotIndex);
+                        log.debug("Part: {}", timeSlotIndex);
 
-                        //Время начала и конца пар
+                        // Время начала и конца пар
                         String startTime = parts[1].trim();
                         String endTime = parts[2].trim();
                         LocalTime startLocalTime = LocalTime.parse(startTime);
                         LocalTime endLocalTime = LocalTime.parse(endTime);
-                        log.info("Start time: " + startLocalTime);
-                        log.info("End time: " + endLocalTime);
+                        log.debug("Start time: {}", startLocalTime);
+                        log.debug("End time: {}", endLocalTime);
 
-                        log.info("Subject: " + subject);
-                        timeTable.setSubject(Subject.builder()
-                                .name(subject)
-                                .build());
-//                        log.info("Description: " + description);
+                        log.debug("Type: {}", type);
+                        log.debug("Description: {}", description);
+
+                        Element divElement = timetableItem.selectFirst("div.pl-4");
+                        String subject = divElement.ownText().trim();
+                        log.debug("Subject: {}", subject);
+
+                        // Парсинг ссылок на преподавателей
+                        StringBuilder teacherName = new StringBuilder();
+                        Elements teacherLinks = timetableItem.select("a[href^=\"/people/\"]");
+                        for (Element teacherLink : teacherLinks) {
+                            teacherName.append(teacherLink.text());
+                        }
+                        log.debug("Teacher: {}", teacherName);
+
+                        // Парсинг ссылок на аудитории
+                        StringBuilder location = new StringBuilder();
+                        Elements locationLinks = timetableItem.select("a[href^=\"https://rut-miit.ru/report/public\"]");
+                        for (Element locationLink : locationLinks) {
+                            location.append(locationLink.text());
+                        }
+                        log.debug("Location: {}", location);
+
+                        // Парсинг ссылок на группы
+                        Elements groupLinks = timetableItem.select("a[href^=\"/timetable/\"]");
+                        for (Element groupLink : groupLinks) {
+                            String groupName = groupLink.text();
+                            log.debug("Group: {}", groupName);
+                        }
 
                         timeTable.setTime(Time.builder()
                                 .timeStart(startLocalTime.atDate(LocalDate.now()))
                                 .timeEnd(endLocalTime.atDate(LocalDate.now()))
                                 .build());
 
-                        // Парсинг ссылок на преподавателей
-                        StringBuilder teacherStr = null;
-                        Elements teacherLinks = timetableItem.select("a[href^=\"/people/\"]");
-                        for (Element teacherLink : teacherLinks) {
-                            teacherStr = new StringBuilder();
-                            String teacherName = teacherLink.text();
-                            teacherStr.append(teacherName);
-                        }
-                        Teacher teacher = Teacher.builder()
-                                .nameSurname(teacherStr.toString())
-                                .build();
-                        timeTable.setTeacher(teacher);
-
-                        // Парсинг ссылок на аудитории
-                        StringBuilder auditoriumStr = null;
-                        Elements locationLinks = timetableItem.select("a[href^=\"https://rut-miit.ru/report/public\"]");
-                        for (Element locationLink : locationLinks) {
-                            auditoriumStr = new StringBuilder();
-                            String location = locationLink.text();
-                            auditoriumStr.append(location);
+                        // Проверка на null для преподавателя
+                        if (teacherName.length() > 0) {
+                            timeTable.setTeacher(Teacher.builder()
+                                    .nameSurname(teacherName.toString())
+                                    .build());
                         }
 
-                        Auditorium auditorium = Auditorium.builder()
-                                .auditoriumNumber(auditoriumStr.toString())
-                                .build();
-                        timeTable.setAuditorium(auditorium);
-                        timeTable.setIsEven(true);
-                        timeTable.setType("test");
-                        log.info(timeTable);
+                        // Проверка на null для аудитории
+                        if (location.length() > 0) {
+                            timeTable.setAuditorium(Auditorium.builder()
+                                    .auditoriumNumber(location.toString())
+                                    .build());
+                        }
+
+                        timeTable.setSubject(Subject.builder()
+                                .name(subject)
+                                .build());
+                        timeTable.setType(type);
+                        timeTable.setIsEven(even);
                         tableList.add(timeTable);
+                        log.debug("TimeTable: {}", timeTable);
                     }
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        log.warn(tableList);
+        log.info("Parsing completed-{}: {}", studyGroup.getGroupName(), tableList);
         return tableList;
     }
 }

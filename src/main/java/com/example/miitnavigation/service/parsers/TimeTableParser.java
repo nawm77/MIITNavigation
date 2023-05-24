@@ -6,5 +6,5 @@ import com.example.miitnavigation.model.TimeTable;
 import java.util.List;
 
 public interface TimeTableParser {
-    List<TimeTable> parse(StudyGroup studyGroup);
+    List<TimeTable> parse(StudyGroup studyGroup, boolean even);
 }

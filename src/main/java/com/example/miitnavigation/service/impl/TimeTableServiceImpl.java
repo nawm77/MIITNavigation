@@ -21,18 +21,19 @@ public class TimeTableServiceImpl implements TimeTableService {
     @PersistenceContext
     private EntityManager entityManager;
     private final TimeTableRepository timeTableRepository;
-    private final AuditoriumService auditoriumService;
 
     @Autowired
     public TimeTableServiceImpl(TimeTableRepository timeTableRepository, AuditoriumService auditoriumService) {
         this.timeTableRepository = timeTableRepository;
-        this.auditoriumService = auditoriumService;
     }
 
     public void saveTimeTable(TimeTable timeTable) {
-//        if (!auditoriumService.exists(timeTable.getAuditorium().getAuditoriumNumber())) {
         entityManager.merge(timeTable);
-//        }
+    }
+
+    @Override
+    public List<TimeTable> findAllWithFetch() {
+        return timeTableRepository.findAllWithFetch();
     }
 
     @Async
