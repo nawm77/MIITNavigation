@@ -9,7 +9,6 @@ services:
       POSTGRES_DB: miit
       PGDATA: /data/postgres
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d/
       - .:/var/lib/postgresql/data
     ports:
       - "5432:5432"
@@ -37,3 +36,6 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/main.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
