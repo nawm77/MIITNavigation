@@ -46,6 +46,7 @@ public class TimeTableParserImpl implements TimeTableParser {
                     Elements timetableItems = infoBlock.select("div.timetable__list-timeslot");
                     for (Element timetableItem : timetableItems) {
                         TimeTable timeTable = new TimeTable();
+                        timeTable.setHeader(headerText);
                         String timeSlot = Objects.requireNonNull(timetableItem.selectFirst("div.mb-1")).text();
                         String type = Objects.requireNonNull(timetableItem.selectFirst("span.timetable__grid-text_gray")).text();
                         String description = timetableItem.ownText().trim();

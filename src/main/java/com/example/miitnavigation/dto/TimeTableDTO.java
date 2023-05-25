@@ -16,6 +16,7 @@ public class TimeTableDTO {
     private long timeId;
     private long auditoriumId;
     private boolean isEven;
+    private String header;
     private String type;
 
     public static List<TimeTableDTO> toDTO(List<TimeTable> timeTable) {
@@ -26,6 +27,7 @@ public class TimeTableDTO {
                 timeTable1.getTime().getId(),
                 timeTable1.getAuditorium().getId(),
                 timeTable1.getIsEven(),
+                timeTable1.getHeader(),
                 timeTable1.getType())
         ).collect(Collectors.toList());
     }

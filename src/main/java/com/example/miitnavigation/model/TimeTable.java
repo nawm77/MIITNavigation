@@ -8,10 +8,13 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TimeTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String header;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "subject_id")
@@ -32,17 +35,4 @@ public class TimeTable {
     private Boolean isEven;
 
     private String type;
-
-    @Override
-    public String toString() {
-        return "TimeTable{" +
-                "id=" + id +
-                ", subject=" + subject +
-                ", teacher=" + teacher +
-                ", time=" + time +
-                ", auditorium=" + auditorium +
-                ", isEven=" + isEven +
-                ", type='" + type + '\'' +
-                '}';
-    }
 }
