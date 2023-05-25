@@ -16,15 +16,4 @@ public class UserInfo {
     private String password;
     private String email;
     private String roles;
-
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", roles='" + roles + '\'' +
-                '}';
-    }
 }

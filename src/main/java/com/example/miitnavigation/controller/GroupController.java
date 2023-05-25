@@ -1,17 +1,19 @@
 package com.example.miitnavigation.controller;
 
-import com.example.miitnavigation.exception.GroupException;
-import com.example.miitnavigation.exception.ResourceNotFoundException;
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.service.StudyGroupService;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Log4j2
@@ -26,30 +28,20 @@ public class GroupController {
     }
 
     @GetMapping("/groups")
-    @ResponseBody
-    public String getAllGroups() {
+    public ResponseEntity<List<StudyGroup>> getAllGroups() {
         try {
-            var allStudyGroup = studyGroupService.getAllStudyGroup();
-            log.info(allStudyGroup);
+            CompletableFuture<List<StudyGroup>> allStudyGroup = studyGroupService.getAllStudyGroup();
             List<StudyGroup> studyGroupList = allStudyGroup.get();
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            return gson.toJson(studyGroupList);
+            return ResponseEntity.ok(studyGroupList);
         } catch (InterruptedException | ExecutionException e) {
-            throw new GroupException("Ошибка при получении списка групп");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/group/{id}")
-    @ResponseBody
-    public String getGroupById(@PathVariable long id) throws ExecutionException, InterruptedException {
-        var studyGroupById = studyGroupService.getStudyGroupById(id);
-        log.info(studyGroupById);
+    public ResponseEntity<StudyGroup> getGroupById(@PathVariable long id) throws ExecutionException, InterruptedException {
+        CompletableFuture<Optional<StudyGroup>> studyGroupById = studyGroupService.getStudyGroupById(id);
         Optional<StudyGroup> studyGroup = studyGroupById.get();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        if (studyGroup.isPresent()) {
-            return gson.toJson(studyGroup.get());
-        } else {
-            throw new ResourceNotFoundException("Group not found");
-        }
+        return studyGroup.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

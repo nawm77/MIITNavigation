@@ -18,7 +18,8 @@ import java.util.List;
 @Service
 public class GroupParserServiceImpl implements GroupParserService {
     /**
-     * метод парсит вообще все группы, которые существуют
+     * Метод парсит вообще все группы, которые существуют
+     *
      * @return экземпляр класса StudyGroup
      */
     @Timed
@@ -45,7 +46,7 @@ public class GroupParserServiceImpl implements GroupParserService {
             }
             log.info(studyGroupList.toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Group parsing failed.", e);
         }
 
         return studyGroupList;

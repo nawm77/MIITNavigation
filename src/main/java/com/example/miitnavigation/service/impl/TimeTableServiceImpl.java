@@ -2,17 +2,24 @@ package com.example.miitnavigation.service.impl;
 
 import com.example.miitnavigation.model.TimeTable;
 import com.example.miitnavigation.repository.TimeTableRepository;
+import com.example.miitnavigation.service.AuditoriumService;
 import com.example.miitnavigation.service.TimeTableService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@Transactional
 public class TimeTableServiceImpl implements TimeTableService {
+    @PersistenceContext
+    private EntityManager entityManager;
     private final TimeTableRepository timeTableRepository;
 
     @Autowired
@@ -20,10 +27,20 @@ public class TimeTableServiceImpl implements TimeTableService {
         this.timeTableRepository = timeTableRepository;
     }
 
+    public void saveTimeTable(TimeTable timeTable) {
+        entityManager.merge(timeTable);
+    }
+
+
+    @Override
+    public List<TimeTable> findAllWithFetch() {
+        return timeTableRepository.findAllWithFetch();
+    }
+
     @Async
     @Override
     public CompletableFuture<TimeTable> createTimeTable(TimeTable timeTable) {
-        return CompletableFuture.completedFuture(timeTableRepository.save(timeTable));
+        return CompletableFuture.completedFuture(timeTableRepository.saveAndFlush(timeTable));
     }
 
     @Async
@@ -34,8 +51,14 @@ public class TimeTableServiceImpl implements TimeTableService {
 
     @Async
     @Override
-    public CompletableFuture<List<TimeTable>> getTimeTableTeachers() {
+    public CompletableFuture<List<TimeTable>> getTimeTable() {
         return CompletableFuture.completedFuture(timeTableRepository.findAll());
+    }
+
+    @Override
+    public CompletableFuture<Void> dropTimeTable() {
+        timeTableRepository.deleteAll();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Async
