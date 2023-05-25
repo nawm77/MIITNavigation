@@ -1,3 +1,3 @@
-http.host: "elasticsearch"
+http.host: "84.201.133.141"
 path.config: /usr/share/logstash/pipeline
-xpack.monitoring.elasticsearch.hosts: [ "elasticsearch:9200" ]
+xpack.monitoring.elasticsearch.hosts: [ "84.201.133.141:9200" ]
