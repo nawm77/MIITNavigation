@@ -15,7 +15,8 @@ services:
       - "5432:5432"
   navigation:
     container_name: navigationContainer1
-    image: nawm77/miit-navigation:latest
+#    image: nawm77/miit-navigation:latest
+    image: testnav:1
     ports:
       - "8080:8080"
     environment:
