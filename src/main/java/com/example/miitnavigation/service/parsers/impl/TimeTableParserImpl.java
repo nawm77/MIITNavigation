@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Log4j2
@@ -30,7 +31,7 @@ public class TimeTableParserImpl implements TimeTableParser {
             Element timetableContainer = doc.selectFirst(isEven);
 
             // Парсинг вкладок
-            Elements tabPanes = timetableContainer.select("div.tab-pane");
+            Elements tabPanes = Objects.requireNonNull(timetableContainer).select("div.tab-pane");
             for (Element tabPane : tabPanes) {
                 String tabId = tabPane.attr("id");
                 log.debug("Tab ID: {}", tabId);
@@ -38,15 +39,15 @@ public class TimeTableParserImpl implements TimeTableParser {
                 // Парсинг блоков информации внутри вкладок
                 Elements infoBlocks = tabPane.select("div.info-block");
                 for (Element infoBlock : infoBlocks) {
-                    String headerText = infoBlock.selectFirst("span.info-block__header-text").text();
+                    String headerText = Objects.requireNonNull(infoBlock.selectFirst("span.info-block__header-text")).text();
                     log.debug("Header Text: {}", headerText);
 
                     // Парсинг элементов расписания внутри блоков информации
                     Elements timetableItems = infoBlock.select("div.timetable__list-timeslot");
                     for (Element timetableItem : timetableItems) {
                         TimeTable timeTable = new TimeTable();
-                        String timeSlot = timetableItem.selectFirst("div.mb-1").text();
-                        String type = timetableItem.selectFirst("span.timetable__grid-text_gray").text();
+                        String timeSlot = Objects.requireNonNull(timetableItem.selectFirst("div.mb-1")).text();
+                        String type = Objects.requireNonNull(timetableItem.selectFirst("span.timetable__grid-text_gray")).text();
                         String description = timetableItem.ownText().trim();
 
                         // Какая сейчас пара
@@ -66,7 +67,7 @@ public class TimeTableParserImpl implements TimeTableParser {
                         log.debug("Description: {}", description);
 
                         Element divElement = timetableItem.selectFirst("div.pl-4");
-                        String subject = divElement.ownText().trim();
+                        String subject = Objects.requireNonNull(divElement).ownText().trim();
                         log.debug("Subject: {}", subject);
 
                         // Парсинг ссылок на преподавателей
@@ -117,11 +118,10 @@ public class TimeTableParserImpl implements TimeTableParser {
                         timeTable.setType(type);
                         timeTable.setIsEven(even);
                         tableList.add(timeTable);
-                        log.debug("TimeTable: {}", timeTable);
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             throw new RuntimeException(e);
         }
         log.info("Parsing completed-{}: {}", studyGroup.getGroupName(), tableList);

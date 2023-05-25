@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface TimeTableService {
     void saveTimeTable(TimeTable timeTable);
+
     List<TimeTable> findAllWithFetch();
 
     CompletableFuture<TimeTable> createTimeTable(TimeTable timeTable);
@@ -15,6 +16,8 @@ public interface TimeTableService {
     CompletableFuture<Optional<TimeTable>> getTimeTableById(Long id);
 
     CompletableFuture<List<TimeTable>> getTimeTable();
+
+    CompletableFuture<Void> dropTimeTable();
 
     CompletableFuture<Void> deleteTimeTableById(Long id);
 }

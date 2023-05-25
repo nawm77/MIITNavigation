@@ -23,13 +23,14 @@ public class TimeTableServiceImpl implements TimeTableService {
     private final TimeTableRepository timeTableRepository;
 
     @Autowired
-    public TimeTableServiceImpl(TimeTableRepository timeTableRepository, AuditoriumService auditoriumService) {
+    public TimeTableServiceImpl(TimeTableRepository timeTableRepository) {
         this.timeTableRepository = timeTableRepository;
     }
 
     public void saveTimeTable(TimeTable timeTable) {
         entityManager.merge(timeTable);
     }
+
 
     @Override
     public List<TimeTable> findAllWithFetch() {
@@ -52,6 +53,12 @@ public class TimeTableServiceImpl implements TimeTableService {
     @Override
     public CompletableFuture<List<TimeTable>> getTimeTable() {
         return CompletableFuture.completedFuture(timeTableRepository.findAll());
+    }
+
+    @Override
+    public CompletableFuture<Void> dropTimeTable() {
+        timeTableRepository.deleteAll();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Async
