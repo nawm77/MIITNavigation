@@ -61,6 +61,7 @@ jobs:
             sudo su -
             cd ..
             cd ..
+            sudo docker login --username oauth --password ${{ YANDEX_OAUTH }} cr.yandex
             sudo docker rm $(docker stop navigation)
             sudo docker pull cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:${{ github.sha }}
             cd MIITNavigation-web/

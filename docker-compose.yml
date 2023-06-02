@@ -15,7 +15,8 @@ services:
     restart: always
   navigation:
     container_name: navigation
-    image: nawm77/miit-navigation:latest
+#    image: nawm77/miit-navigation:latest
+    image: cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:latest
     ports:
       - "8080:8080"
     environment:
