@@ -1,8 +1,8 @@
 version: "3"
 services:
   postgres:
-    container_name: postgresMiit
     image: postgres
+    container_name: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
@@ -12,8 +12,9 @@ services:
       - .:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: always
   navigation:
-    container_name: navigationContainer1
+    container_name: navigation
     image: nawm77/miit-navigation:latest
     ports:
       - "8080:8080"
@@ -22,6 +23,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+    depends_on:
+      - postgres
+    restart: always
   prometheus:
     container_name: prometheus
     image: prom/prometheus
@@ -29,8 +33,12 @@ services:
       - "9090:9090"
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - navigation
+    restart: always
   grafana:
     image: grafana/grafana
+    container_name: grafana
     ports:
       - "3000:3000"
     environment:
@@ -39,3 +47,6 @@ services:
     volumes:
       - ./grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/main.yml
       - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    restart: always
