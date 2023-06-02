@@ -1,5 +1,6 @@
 package com.example.miitnavigation.component;
 
+
 import com.example.miitnavigation.model.UserInfo;
 import com.example.miitnavigation.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
