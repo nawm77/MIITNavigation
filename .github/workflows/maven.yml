@@ -50,3 +50,22 @@ jobs:
         run: |
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+      - name: Connect to Yandex Cloud VM
+        uses: appleboy/ssh-action@master
+        env:
+          CR_REGISTRY: crpit1gb46lt67e5d4r8
+          CR_REPOSITORY: miit-navigation
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+          host: 84.201.133.141
+          username: rootuser
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Hello, Yandex Cloud VM!"
+            sudo su -
+            cd ..
+            cd ..
+            docker rm $(docker stop navigation)
+            docker pull cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+            cd MIITNavigation-web/
+            docker compose up -d
