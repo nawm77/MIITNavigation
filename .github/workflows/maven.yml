@@ -66,5 +66,8 @@ jobs:
             sudo docker pull cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:${{ github.sha }}
             sudo docker tag cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:${{ github.sha }} cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:latest
             cd MIITNavigation-web/
+            cd ELK/
+            sudo docker compose up -d
+            cd ..
             git pull
             sudo docker compose up -d
