@@ -64,6 +64,7 @@ jobs:
             sudo docker login --username oauth --password ${{ secrets.YANDEX_OAUTH }} cr.yandex
             sudo docker rm $(sudo docker stop navigation)
             sudo docker pull cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:${{ github.sha }}
+            sudo docker tag cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:${{ github.sha }} cr.yandex/crpit1gb46lt67e5d4r8/miit-navigation:latest
             cd MIITNavigation-web/
             git pull
             sudo docker compose up -d
