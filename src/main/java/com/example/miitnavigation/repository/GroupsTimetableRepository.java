@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface GroupsTimetableRepository extends JpaRepository<GroupsTimetable, Long> {
-    @Query("SELECT tt FROM GroupsTimetable gt JOIN gt.timeTable tt WHERE gt.studyGroup.id = :groupId")
-    List<TimeTable> findTimeTableByGroupId(@Param("groupId") Long groupId);
+//    @Query("SELECT tt FROM GroupsTimetable gt JOIN gt.timeTable tt WHERE gt.studyGroup.id = :groupId")
+//    List<TimeTable> findTimeTableByGroupId(@Param("groupId") Long groupId);
 }

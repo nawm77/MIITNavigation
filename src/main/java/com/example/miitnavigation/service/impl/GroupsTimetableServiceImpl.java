@@ -21,10 +21,10 @@ public class GroupsTimetableServiceImpl implements GroupsTimetableService {
         this.groupsTimetableRepository = groupsTimetableRepository;
     }
 
-    @Override
-    public List<TimeTable> findTimetableByGroupId(Long groupId) {
-        return groupsTimetableRepository.findTimeTableByGroupId(groupId);
-    }
+//    @Override
+//    public List<TimeTable> findTimetableByGroupId(Long groupId) {
+//        return groupsTimetableRepository.findTimeTableByGroupId(groupId);
+//    }
 
     @Async
     @Override

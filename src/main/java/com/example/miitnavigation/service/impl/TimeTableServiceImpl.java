@@ -63,10 +63,10 @@ public class TimeTableServiceImpl implements TimeTableService {
         applicationEventPublisher.publishEvent(new TimeTableCreatedEvent(save, id));
     }
 
-    @Override
-    public boolean existsByGroupId(Long groupId) {
-        return timeTableRepository.existsByGroupId(groupId);
-    }
+//    @Override
+//    public boolean existsByGroupId(Long groupId) {
+//        return timeTableRepository.existsByGroupId(groupId);
+//    }
 
     @Override
     public List<TimeTable> findAllWithFetch() {
