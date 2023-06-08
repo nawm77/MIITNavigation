@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface GroupsTimetableService {
-    List<TimeTable> findTimetableByGroupId(Long groupId);
+//    List<TimeTable> findTimetableByGroupId(Long groupId);
 
     CompletableFuture<GroupsTimetable> createGroupsTimetable(GroupsTimetable groupsTimetable);
 

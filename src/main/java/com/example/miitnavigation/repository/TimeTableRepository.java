@@ -16,5 +16,6 @@ public interface TimeTableRepository extends JpaRepository<TimeTable, Long> {
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM TimeTable t JOIN t.groupsTimetableList g WHERE g.studyGroup.id = :groupId")
     boolean existsByGroupId(Long groupId);
 
-    @Query("SELECT tt FROM TimeTable tt JOIN tt.groupsTimetableList gtl JOIN gtl.studyGroup sg WHERE sg.id = :groupId")
-    List<TimeTable> findByStudyGroup(@Param("groupId") Long groupId);}
+//    @Query("SELECT tt FROM TimeTable tt JOIN tt.groupsTimetableList gtl JOIN gtl.studyGroup sg WHERE sg.id = :groupId")
+//    List<TimeTable> findByStudyGroup(@Param("groupId") Long groupId);
+}

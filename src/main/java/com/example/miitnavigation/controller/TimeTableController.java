@@ -25,14 +25,16 @@ public class TimeTableController {
     private final TimeTableParser timeTableParser;
     private final StudyGroupService studyGroupService;
     private final GroupsTimetableService groupsTimetableService;
+    private final TimeTableRepository timeTableRepository;
 
     @Autowired
     public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser,
-                               StudyGroupService studyGroupService, GroupsTimetableService groupsTimetableService) {
+                               StudyGroupService studyGroupService, GroupsTimetableService groupsTimetableService, TimeTableRepository timeTableRepository) {
         this.timeTableService = timeTableService;
         this.timeTableParser = timeTableParser;
         this.studyGroupService = studyGroupService;
         this.groupsTimetableService = groupsTimetableService;
+        this.timeTableRepository = timeTableRepository;
     }
 
     @GetMapping("/timetable/{id}")
@@ -60,8 +62,9 @@ public class TimeTableController {
                 }
             }
 
-            List<TimeTable> timetableByGroupId = groupsTimetableService.findTimetableByGroupId(id);
-            return ResponseEntity.ok(timetableByGroupId);
+//            List<TimeTable> timetableByGroupId = groupsTimetableService.findTimetableByGroupId(id);
+            List<TimeTable> byStudyGroup = timeTableRepository.findAllWithFetch();
+            return ResponseEntity.ok(byStudyGroup);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
