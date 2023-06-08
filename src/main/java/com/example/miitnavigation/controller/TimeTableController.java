@@ -46,21 +46,21 @@ public class TimeTableController {
             StudyGroup studyGroup = optionalStudyGroup.get();
             timeTableService.dropTimeTable();
 
-            if (!timeTableService.existsByGroupId(id)) {
-                if (isEven != null) {
-                    List<TimeTable> parse = timeTableParser.parse(studyGroup, isEven);
-                    for (TimeTable timeTable : parse) {
-                        timeTableService.saveTimeTable(timeTable, id);
-                    }
-                } else {
-                    List<TimeTable> parse1 = timeTableParser.parse(studyGroup, true);
-                    List<TimeTable> parse2 = timeTableParser.parse(studyGroup, false);
-                    parse1.addAll(parse2);
-                    for (TimeTable timeTable : parse1) {
-                        timeTableService.saveTimeTable(timeTable, id);
-                    }
+//            if (!timeTableService.existsByGroupId(id)) {
+            if (isEven != null) {
+                List<TimeTable> parse = timeTableParser.parse(studyGroup, isEven);
+                for (TimeTable timeTable : parse) {
+                    timeTableService.saveTimeTable(timeTable, id);
+                }
+            } else {
+                List<TimeTable> parse1 = timeTableParser.parse(studyGroup, true);
+                List<TimeTable> parse2 = timeTableParser.parse(studyGroup, false);
+                parse1.addAll(parse2);
+                for (TimeTable timeTable : parse1) {
+                    timeTableService.saveTimeTable(timeTable, id);
                 }
             }
+//            }
 
 //            List<TimeTable> timetableByGroupId = groupsTimetableService.findTimetableByGroupId(id);
             List<TimeTable> byStudyGroup = timeTableRepository.findAllWithFetch();
