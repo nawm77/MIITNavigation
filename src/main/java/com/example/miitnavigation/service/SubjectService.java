@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface SubjectService {
+    Subject findOrCreate(Subject subject);
+
     CompletableFuture<Subject> createSubject(Subject subject);
 
     CompletableFuture<Optional<Subject>> getSubjectById(Long id);

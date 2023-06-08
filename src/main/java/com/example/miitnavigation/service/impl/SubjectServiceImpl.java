@@ -26,6 +26,11 @@ public class SubjectServiceImpl implements SubjectService {
         return CompletableFuture.completedFuture(subjectRepository.save(subject));
     }
 
+    public Subject findOrCreate(Subject subject) {
+        return subjectRepository.findByName(subject.getName())
+                .orElseGet(() -> subjectRepository.save(subject));
+    }
+
     @Async
     @Override
     public CompletableFuture<Optional<Subject>> getSubjectById(Long id) {

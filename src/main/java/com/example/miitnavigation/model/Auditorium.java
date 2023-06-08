@@ -11,20 +11,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Auditorium {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String auditoriumNumber;
-    @OneToMany(mappedBy = "auditorium", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "auditorium")
+    @ToString.Exclude
     private List<TimeTable> timeTableList;
-
-    @Override
-    public String toString() {
-        return "Auditorium{" +
-                "id=" + id +
-                ", auditoriumNumber='" + auditoriumNumber + '\'' +
-                ", timeTableList=" + timeTableList +
-                '}';
-    }
 }

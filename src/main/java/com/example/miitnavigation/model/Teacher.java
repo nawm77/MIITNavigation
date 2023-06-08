@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public final class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,13 +19,4 @@ public final class Teacher {
     private String nameSurname;
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<TimeTable> timeTableList;
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "id=" + id +
-                ", nameSurname='" + nameSurname + '\'' +
-                ", timeTableList=" + timeTableList +
-                '}';
-    }
 }

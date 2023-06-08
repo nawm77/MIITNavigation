@@ -20,6 +20,12 @@ public class TimeServiceImpl implements TimeService {
         this.timeRepository = timeRepository;
     }
 
+    @Override
+    public Time findOrCreate(Time time) {
+        return timeRepository.findByTimeStartAndTimeEnd(time.getTimeStart(), time.getTimeEnd())
+                .orElseGet(() -> timeRepository.save(time));
+    }
+
     @Async
     @Override
     public CompletableFuture<Time> createTime(Time time) {

@@ -1,12 +1,13 @@
 package com.example.miitnavigation.service.impl;
 
-import com.example.miitnavigation.model.TimeTable;
+import com.example.miitnavigation.events.TimeTableCreatedEvent;
+import com.example.miitnavigation.model.*;
+import com.example.miitnavigation.repository.GroupsTimetableRepository;
 import com.example.miitnavigation.repository.TimeTableRepository;
-import com.example.miitnavigation.service.AuditoriumService;
-import com.example.miitnavigation.service.TimeTableService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import com.example.miitnavigation.service.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,22 +16,57 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+@Log4j2
 @Service
 @Transactional
 public class TimeTableServiceImpl implements TimeTableService {
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final GroupsTimetableRepository groupsTimetableRepository;
     private final TimeTableRepository timeTableRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final AuditoriumService auditoriumService;
+    private final SubjectService subjectService;
+    private final TeacherService teacherService;
+    private final TimeService timeService;
 
     @Autowired
-    public TimeTableServiceImpl(TimeTableRepository timeTableRepository) {
+    public TimeTableServiceImpl(TimeTableRepository timeTableRepository,
+                                ApplicationEventPublisher applicationEventPublisher,
+                                AuditoriumService auditoriumService,
+                                SubjectService subjectService,
+                                TeacherService teacherService, TimeService timeService,
+                                GroupsTimetableRepository groupsTimetableRepository) {
         this.timeTableRepository = timeTableRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.auditoriumService = auditoriumService;
+        this.subjectService = subjectService;
+        this.teacherService = teacherService;
+        this.timeService = timeService;
+        this.groupsTimetableRepository = groupsTimetableRepository;
     }
 
-    public void saveTimeTable(TimeTable timeTable) {
-        entityManager.merge(timeTable);
+    @Transactional
+    public void saveTimeTable(TimeTable timeTable, long id) {
+        Auditorium auditorium = auditoriumService.findOrCreate(timeTable.getAuditorium());
+        timeTable.setAuditorium(auditorium);
+
+        Subject subject = subjectService.findOrCreate(timeTable.getSubject());
+        timeTable.setSubject(subject);
+
+        Teacher teacher = teacherService.findOrCreate(timeTable.getTeacher());
+        timeTable.setTeacher(teacher);
+
+        Time time = timeService.findOrCreate(timeTable.getTime());
+        timeTable.setTime(time);
+
+        log.debug(auditorium);
+        TimeTable save = timeTableRepository.save(timeTable);
+        applicationEventPublisher.publishEvent(new TimeTableCreatedEvent(save, id));
     }
 
+    @Override
+    public boolean existsByGroupId(Long groupId) {
+        return timeTableRepository.existsByGroupId(groupId);
+    }
 
     @Override
     public List<TimeTable> findAllWithFetch() {

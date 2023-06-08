@@ -20,6 +20,11 @@ public class TeacherServiceImpl implements TeacherService {
         this.teacherRepository = teacherRepository;
     }
 
+    public Teacher findOrCreate(Teacher teacher) {
+        return teacherRepository.findByNameSurname(teacher.getNameSurname())
+                .orElseGet(() -> teacherRepository.save(teacher));
+    }
+
     @Async
     @Override
     public CompletableFuture<Teacher> createTeacher(Teacher teacher) {

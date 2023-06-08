@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface TeacherService {
+    Teacher findOrCreate(Teacher teacher);
+
     CompletableFuture<Teacher> createTeacher(Teacher teacher);
 
     CompletableFuture<Optional<Teacher>> getTeacherById(Long id);

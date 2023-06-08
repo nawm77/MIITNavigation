@@ -7,7 +7,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface TimeTableService {
-    void saveTimeTable(TimeTable timeTable);
+    boolean existsByGroupId(Long groupId);
+
+    void saveTimeTable(TimeTable timeTable, long id);
 
     List<TimeTable> findAllWithFetch();
 

@@ -7,9 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface AuditoriumService {
-    CompletableFuture<Auditorium> createAuditorium(Auditorium auditorium);
-
-    boolean exists(String auditoriumNumber);
+    Auditorium findOrCreate(Auditorium auditorium);
 
     CompletableFuture<Optional<Auditorium>> getAuditoriumById(Long id);
 

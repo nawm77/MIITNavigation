@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface TimeService {
+    Time findOrCreate(Time time);
+
     CompletableFuture<Time> createTime(Time time);
 
     CompletableFuture<Optional<Time>> getTimeById(Long id);
