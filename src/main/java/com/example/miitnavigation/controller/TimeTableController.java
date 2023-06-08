@@ -2,6 +2,8 @@ package com.example.miitnavigation.controller;
 
 import com.example.miitnavigation.model.StudyGroup;
 import com.example.miitnavigation.model.TimeTable;
+import com.example.miitnavigation.repository.TimeTableRepository;
+import com.example.miitnavigation.service.GroupsTimetableService;
 import com.example.miitnavigation.service.StudyGroupService;
 import com.example.miitnavigation.service.TimeTableService;
 import com.example.miitnavigation.service.parsers.TimeTableParser;
@@ -22,13 +24,15 @@ public class TimeTableController {
     private final TimeTableService timeTableService;
     private final TimeTableParser timeTableParser;
     private final StudyGroupService studyGroupService;
+    private final GroupsTimetableService groupsTimetableService;
 
     @Autowired
     public TimeTableController(TimeTableService timeTableService, TimeTableParser timeTableParser,
-                               StudyGroupService studyGroupService) {
+                               StudyGroupService studyGroupService, GroupsTimetableService groupsTimetableService) {
         this.timeTableService = timeTableService;
         this.timeTableParser = timeTableParser;
         this.studyGroupService = studyGroupService;
+        this.groupsTimetableService = groupsTimetableService;
     }
 
     @GetMapping("/timetable/{id}")
@@ -39,23 +43,25 @@ public class TimeTableController {
         if (optionalStudyGroup.isPresent()) {
             StudyGroup studyGroup = optionalStudyGroup.get();
             timeTableService.dropTimeTable();
-            //fixme сейчас данные в БД сохраняются просто так, надо доделать все связи, сохранение по сути не работает!
-            //fixme необходимо доделать асинхронную работу с БД
-            if (isEven != null) {
-                List<TimeTable> parse = timeTableParser.parse(studyGroup, isEven);
-                for (TimeTable timeTable : parse) {
-                    timeTableService.saveTimeTable(timeTable);
-                }
-            } else {
-                List<TimeTable> parse1 = timeTableParser.parse(studyGroup, true);
-                List<TimeTable> parse2 = timeTableParser.parse(studyGroup, false);
-                parse1.addAll(parse2);
-                for (TimeTable timeTable : parse1) {
-                    timeTableService.saveTimeTable(timeTable);
+
+            if (!timeTableService.existsByGroupId(id)) {
+                if (isEven != null) {
+                    List<TimeTable> parse = timeTableParser.parse(studyGroup, isEven);
+                    for (TimeTable timeTable : parse) {
+                        timeTableService.saveTimeTable(timeTable, id);
+                    }
+                } else {
+                    List<TimeTable> parse1 = timeTableParser.parse(studyGroup, true);
+                    List<TimeTable> parse2 = timeTableParser.parse(studyGroup, false);
+                    parse1.addAll(parse2);
+                    for (TimeTable timeTable : parse1) {
+                        timeTableService.saveTimeTable(timeTable, id);
+                    }
                 }
             }
-            List<TimeTable> allWithFetch = timeTableService.findAllWithFetch();
-            return ResponseEntity.ok(allWithFetch);
+
+            List<TimeTable> timetableByGroupId = groupsTimetableService.findTimetableByGroupId(id);
+            return ResponseEntity.ok(timetableByGroupId);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

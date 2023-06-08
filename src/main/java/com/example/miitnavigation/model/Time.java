@@ -2,6 +2,7 @@ package com.example.miitnavigation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public final class Time {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +22,4 @@ public final class Time {
     private LocalDateTime timeEnd;
     @OneToMany(mappedBy = "time", cascade = CascadeType.ALL)
     private List<TimeTable> timeTableList;
-
-    @Override
-    public String toString() {
-        return "Time{" +
-                "id=" + id +
-                ", timeStart=" + timeStart +
-                ", timeEnd=" + timeEnd +
-                ", timeTableList=" + timeTableList +
-                '}';
-    }
 }

@@ -20,18 +20,10 @@ public class AuditoriumServiceImpl implements AuditoriumService {
         this.auditoriumRepository = auditoriumRepository;
     }
 
-    @Async
     @Override
-    public CompletableFuture<Auditorium> createAuditorium(Auditorium auditorium) {
-        if (auditoriumRepository.existsByAuditoriumNumber(auditorium.getAuditoriumNumber())) {
-            throw new IllegalArgumentException("Auditorium with the same name already exists");
-        }
-        return CompletableFuture.completedFuture(auditoriumRepository.save(auditorium));
-    }
-
-    @Override
-    public boolean exists(String auditoriumNumber) {
-        return auditoriumRepository.existsByAuditoriumNumber(auditoriumNumber);
+    public Auditorium findOrCreate(Auditorium auditorium) {
+        return auditoriumRepository.findByAuditoriumNumber(auditorium.getAuditoriumNumber())
+                .orElseGet(() -> auditoriumRepository.save(auditorium));
     }
 
     @Async

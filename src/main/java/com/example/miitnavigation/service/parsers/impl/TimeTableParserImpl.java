@@ -39,13 +39,14 @@ public class TimeTableParserImpl implements TimeTableParser {
                 // Парсинг блоков информации внутри вкладок
                 Elements infoBlocks = tabPane.select("div.info-block");
                 for (Element infoBlock : infoBlocks) {
+                    TimeTable timeTable;
                     String headerText = Objects.requireNonNull(infoBlock.selectFirst("span.info-block__header-text")).text();
                     log.debug("Header Text: {}", headerText);
 
                     // Парсинг элементов расписания внутри блоков информации
                     Elements timetableItems = infoBlock.select("div.timetable__list-timeslot");
                     for (Element timetableItem : timetableItems) {
-                        TimeTable timeTable = new TimeTable();
+                        timeTable = new TimeTable();
                         timeTable.setHeader(headerText);
                         String timeSlot = Objects.requireNonNull(timetableItem.selectFirst("div.mb-1")).text();
                         String type = Objects.requireNonNull(timetableItem.selectFirst("span.timetable__grid-text_gray")).text();
@@ -99,25 +100,28 @@ public class TimeTableParserImpl implements TimeTableParser {
                                 .timeEnd(endLocalTime.atDate(LocalDate.now()))
                                 .build());
 
-                        // Проверка на null для преподавателя
                         if (teacherName.length() > 0) {
                             timeTable.setTeacher(Teacher.builder()
                                     .nameSurname(teacherName.toString())
                                     .build());
                         }
 
-                        // Проверка на null для аудитории
                         if (location.length() > 0) {
                             timeTable.setAuditorium(Auditorium.builder()
                                     .auditoriumNumber(location.toString())
                                     .build());
                         }
-
                         timeTable.setSubject(Subject.builder()
                                 .name(subject)
                                 .build());
                         timeTable.setType(type);
                         timeTable.setIsEven(even);
+//                        GroupsTimetable groupsTimetable = GroupsTimetable.builder()
+//                                .studyGroup(studyGroup)
+//                                .timeTable(timeTable) // Установка связи с TimeTable
+//                                .build();
+//                        // Добавление GroupsTimetable в список связанных с TimeTable
+//                        timeTable.setGroupsTimetableList();
                         tableList.add(timeTable);
                     }
                 }

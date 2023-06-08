@@ -1,6 +1,7 @@
 package com.example.miitnavigation.service.impl;
 
 import com.example.miitnavigation.model.GroupsTimetable;
+import com.example.miitnavigation.model.TimeTable;
 import com.example.miitnavigation.repository.GroupsTimetableRepository;
 import com.example.miitnavigation.service.GroupsTimetableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ public class GroupsTimetableServiceImpl implements GroupsTimetableService {
     @Autowired
     public GroupsTimetableServiceImpl(GroupsTimetableRepository groupsTimetableRepository) {
         this.groupsTimetableRepository = groupsTimetableRepository;
+    }
+
+    @Override
+    public List<TimeTable> findTimetableByGroupId(Long groupId) {
+        return groupsTimetableRepository.findTimeTableByGroupId(groupId);
     }
 
     @Async

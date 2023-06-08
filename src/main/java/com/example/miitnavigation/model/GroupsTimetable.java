@@ -9,23 +9,15 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public final class GroupsTimetable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "study_group_id")
     private StudyGroup studyGroup;
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "time_table_id")
     private TimeTable timeTable;
-
-    @Override
-    public String toString() {
-        return "GroupsTimetable{" +
-                "id=" + id +
-                ", studyGroup=" + studyGroup +
-                ", timeTable=" + timeTable +
-                '}';
-    }
 }
